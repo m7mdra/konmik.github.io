@@ -58,7 +58,7 @@ storage and passing them around, Dagger provides an elegant solution.</p>
 <p>Dagger has been developed by <em>Square, Inc</em> guys: <a href="http://square.github.io/dagger/">square.github.io/dagger</a></p>
 <p>Dagger 2 is a fork of Square's Dagger that has been developed by <em>Google</em> and has been used on performance critical projects:
 <a href="https://github.com/google/dagger">github.com/google/dagger</a></p>
-<h2>Singleton</h2>
+<h2>Benefits: Singleton</h2>
 <p>On Android one of the typical tasks is to create a single <code>SharedPreferences</code> object and share it through all the application.
 It is required in an activity, in a fragment, in a custom view. Typical solution is to keep that <code>SharedPreference</code> inside of <code>Application</code> object
 and create a getter for it. Then, your code will look like this:</p>
@@ -90,13 +90,13 @@ How many lines of code you will need to change?</p>
 <p>Now we do not care about where to get all that stuff - it will be created for us. <code>Gson</code> could be inside of <code>MyApp</code> object.
 It also could be somewhere in <code>MyNetwork.Parsing.Processor</code>. We just require <code>Gson</code>! Yes, we need to instruct Dagger how to get <code>Gson</code> once,
 but later we will be able to share it all over the application with <code>@Inject</code> annotation.</p>
-<h2>Order of objects instantiation</h2>
+<h2>Benefits: Order of objects instantiation</h2>
 <p>Another problem we have is the order of objects instantiation. Say, we have
 <code>ServerAPI</code>, <code>Gson</code>, <code>DateConverter</code>, <code>AuthenticationManager</code>, <code>SharedPreferences</code> and 50 other objects that we need to initialize.
 One day we've decided to make some refactoring, and we've lost track of what should be initialized in which order.
 Null pointer exceptions everywhere! Stack overflow because of circular constructor calls! What have I done? <code>git reset --hard</code>!
 But Dagger manages the order of objects instantiation and warns you about such problems during compile-time.</p>
-<h2>Passing constructor arguments that are not required for the object</h2>
+<h2>Benefits: Passing constructor arguments that are not required for the object</h2>
 <p>How about this example?</p>
 <div class="highlight"><pre><span class="n">onCreate</span><span class="o">(..)</span> <span class="o">{</span>
     <span class="n">authManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AuthManager</span><span class="o">(((</span><span class="n">MyApp</span><span class="o">)</span><span class="n">getContext</span><span class="o">().</span><span class="na">getApplicationContext</span><span class="o">()).</span><span class="na">getGson</span><span class="o">());</span>
@@ -127,15 +127,25 @@ But Dagger manages the order of objects instantiation and warns you about such p
 </pre></div>
 
 
+<h2>Other benefits</h2>
+<h3>Unit tests</h3>
+<p>With Dagger it is very easy to inject one object instead of another for the sake of unit-testing.</p>
+<h3>Integration tests</h3>
+<p>You can easily substitute any part of your application. In example, you can inject a network interface that will provide
+application with mock data, failure responses and delays to simulate poor network connection and incorrect server responses.
+Here is an example: <a href="https://github.com/JakeWharton/u2020">U+2020</a></p>
+<h3>Scopes</h3>
+<p>With Dagger singletons can be bound to a specific part of application. In example, you can use <code>Activity</code> context
+and when activity dies, you can automatically release all references to all instantiated singletons that have been associated with this Activity,
+like <code>Drawer</code> and <code>ActionBar</code>.</p>
 <h1>Installation</h1>
 <hr />
 <p>Dagger consists of two parts - compiler that will generate the injection code and a very little runtime library.</p>
 <p>While Dagger 2 is in a SNAPSHOT version, you'll need to download and install it manually. Get it here:</p>
-<div class="highlight"><pre>https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger/2.0-SNAPSHOT/
-https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger-compiler/2.0-SNAPSHOT/
-</pre></div>
-
-
+<ul>
+<li><a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger/2.0-SNAPSHOT/">dagger</a></li>
+<li><a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger-compiler/2.0-SNAPSHOT/">dagger-compiler</a></li>
+</ul>
 <p>Put <code>jar</code> files in your <code>libs</code> folder and include them into your <code>gradle.build</code> file like this:</p>
 <div class="highlight"><pre>dependencies {
     compile &#39;javax.inject:javax.inject:1&#39;
@@ -146,7 +156,7 @@ https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger
 </pre></div>
 
 
-<p>You'll also need to include that two <code>javax.*</code> additional libraries Dagger 2 depends on.</p>
+<p>You will also need to include that two <code>javax.*</code> additional libraries Dagger 2 depends on.</p>
 <h1>Basic example</h1>
 <hr />
 <h2>Simple injection with @Inject constructor</h2>
