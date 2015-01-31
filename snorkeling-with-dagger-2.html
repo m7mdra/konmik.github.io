@@ -132,12 +132,27 @@ But Dagger manages the order of objects instantiation and warns you about such p
 <p>With Dagger it is very easy to inject one object instead of another for the sake of unit-testing.</p>
 <h3>Integration tests</h3>
 <p>You can easily substitute any part of your application. In example, you can inject a network interface that will provide
-application with mock data, failure responses and delays to simulate poor network connection and incorrect server responses.
-Here is an example: <a href="https://github.com/JakeWharton/u2020">U+2020</a></p>
+application with mock data, failure responses and delays to simulate poor network connection and incorrect server responses.</p>
+<p>Here is an example: <a href="https://github.com/JakeWharton/u2020">U+2020</a></p>
 <h3>Scopes</h3>
-<p>With Dagger singletons can be bound to a specific part of application. In example, you can use <code>Activity</code> context
-and when activity dies, you can automatically release all references to all instantiated singletons that have been associated with this Activity,
-like <code>Drawer</code> and <code>ActionBar</code>.</p>
+<p>With Dagger injections can be bound to a specific part of application. In example, you can inject activity-related
+objects such as <code>DrawerController</code> and <code>ActionBarController</code> and when activity dies, you can automatically release references
+to objects inside Dagger that have been associated with this activity, so sharing of activity-related objects can done without memory leaks.</p>
+<p>Another example is to hide all authentication-related objects (network cache, balance, access tokens) when user logs out,
+so all successive activities will get fresh objects in unauthenticated state.</p>
+<h3>Objects decoupling</h3>
+<p>It is hard to build a multi-object environment where all components are tightly coupled. In example,
+if every component that has access to <code>SharedPreferences</code> should know how to create <code>SharedPreferences</code> instance
+or where to get it then if something changes you should trace all objects that are using
+<code>SharedPreferences</code> and change their behavior. With Dagger the code that initializes <code>SharedPreferences</code>
+lives in a different place of where <code>SharedPreferences</code> are used. So there are less connections between
+objects and refactoring can be made easy.</p>
+<h3>Declarative programming style</h3>
+<p><em>Declarative programming</em> means that when you're writing a program you're declaring what is going on,
+rather than how this code is connected with other parts of your program and what is going next. Amount of bugs that can
+be avoided with declarative programming style is tremendous. On Android it is not easy to understand how
+this could be done because we have so many callbacks and lifecycles that needs to be taken into account,
+but Dagger helps at least with objects instantiation.</p>
 <h1>Installation</h1>
 <hr />
 <p>Dagger consists of two parts - compiler that will generate the injection code and a very little runtime library.</p>
