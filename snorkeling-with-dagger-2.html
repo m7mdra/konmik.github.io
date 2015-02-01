@@ -132,13 +132,13 @@ But Dagger manages the order of objects instantiation and warns you about such p
 <p>With Dagger it is very easy to inject one object instead of another for the sake of unit-testing.</p>
 <h3>Integration tests</h3>
 <p>You can easily substitute any part of your application. In example, you can inject a network interface that will provide
-application with mock data, failure responses and delays to simulate poor network connection and incorrect server responses.</p>
+an application with mock data, failure responses and delays to simulate poor network connection and incorrect server responses.</p>
 <p>Here is an example: <a href="https://github.com/JakeWharton/u2020">U+2020</a></p>
 <h3>Scopes</h3>
-<p>With Dagger injections can be bound to a specific part of application. In example, you can inject activity-related
-objects such as <code>DrawerController</code> and <code>ActionBarController</code> and when activity dies, you can automatically release references
-to objects inside Dagger that have been associated with this activity, so sharing of activity-related objects can done without memory leaks.</p>
-<p>Another example is to hide all authentication-related objects (network cache, balance, access tokens) when user logs out,
+<p>With Dagger injections can be bound to a specific part of an application. In example, you can inject activity-related
+objects such as <code>DrawerController</code> and <code>ActionBarController</code> and when an activity dies, you can automatically release references
+to objects inside Dagger that have been associated with this activity, so sharing of activity-related objects can be done without memory leaks.</p>
+<p>Another example is to hide all authentication-related objects (a network cache, a balance, an access tokens) when user logs out,
 so all successive activities will get fresh objects in unauthenticated state.</p>
 <h3>Objects decoupling</h3>
 <p>It is hard to build a multi-object environment where all components are tightly coupled. In example,
@@ -147,21 +147,21 @@ or where to get it then if something changes you should trace all objects that a
 <code>SharedPreferences</code> and change their behavior. With Dagger the code that initializes <code>SharedPreferences</code>
 lives in a different place of where <code>SharedPreferences</code> are used. So there are less connections between
 objects and refactoring can be made easy.</p>
-<h3>Declarative programming style</h3>
+<h3>A declarative programming style</h3>
 <p><em>Declarative programming</em> means that when you're writing a program you're declaring what is going on,
 rather than how this code is connected with other parts of your program and what is going next. Amount of bugs that can
 be avoided with declarative programming style is tremendous. On Android it is not easy to understand how
 this could be done because we have so many callbacks and lifecycles that needs to be taken into account,
-but Dagger helps at least with objects instantiation.</p>
+but Dagger helps at least with the objects instantiation.</p>
 <h1>Installation</h1>
 <hr />
-<p>Dagger consists of two parts - compiler that will generate the injection code and a very little runtime library.</p>
+<p>Dagger consists of two parts - a compiler that will generate the injection code and a very little runtime library.</p>
 <p>While Dagger 2 is in a SNAPSHOT version, you'll need to download and install it manually. Get it here:</p>
 <ul>
 <li><a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger/2.0-SNAPSHOT/">dagger</a></li>
 <li><a href="https://oss.sonatype.org/content/repositories/snapshots/com/google/dagger/dagger-compiler/2.0-SNAPSHOT/">dagger-compiler</a></li>
 </ul>
-<p>Put <code>jar</code> files in your <code>libs</code> folder and include them into your <code>gradle.build</code> file like this:</p>
+<p>Put <code>jar</code> files into your <code>libs</code> folder and include them into your <code>gradle.build</code> file like this:</p>
 <div class="highlight"><pre>dependencies {
     compile &#39;javax.inject:javax.inject:1&#39;
     compile &#39;javax.annotation:javax.annotation-api:1.2&#39;
@@ -194,8 +194,8 @@ but Dagger helps at least with objects instantiation.</p>
 </pre></div>
 
 
-<p><code>@Inject</code> says to Dagger that this constructor will be used to instantiate <code>PreferencesLogger</code> object. While current implementation
-is quite stupid, we will make <code>SharedPreferences</code> to be passed to the <code>PreferencesLogger</code>'s constructor later and it will look a little bit better.</p>
+<p><code>@Inject</code> says to Dagger that this constructor will be used to instantiate <code>PreferencesLogger</code> object. The current implementation
+is quite stupid but we will make <code>SharedPreferences</code> to be passed to the <code>PreferencesLogger</code>'s constructor later and it will look a little bit better.</p>
 <h2>Injection</h2>
 <p>Here is how we want to use <code>PreferencesLogger</code>:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
@@ -214,11 +214,11 @@ is quite stupid, we will make <code>SharedPreferences</code> to be passed to the
 
 
 <h2>Code generation</h2>
-<p>Are you curious how <code>MyApplication.inject</code> looks like? No, you can't see it right now. :D At first you'll need to see a little picture.</p>
+<p>Are you curious how <code>MyApplication.inject</code> looks like? No, you can't see it right now. :D At first you need to see a little picture.</p>
 <p><img alt="Dagger 2 diagram 1" src="images/dagger_2_diagram_1.png" /></p>
 <p>While working with Dagger 2, we need to keep in mind how it is composed. You know about <code>@Inject</code> constructor, so next
 thing to know about is <code>@Component</code>. Component is an interface marked with <code>@Component</code> annotation that shows
-to Dagger 2 which objects we want to inject into.</p>
+to Dagger 2 into which objects we want to inject.</p>
 <div class="highlight"><pre><span class="nd">@Component</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AppComponent</span> <span class="o">{</span>
     <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainActivity</span> <span class="n">activity</span><span class="o">);</span>
@@ -263,7 +263,7 @@ Now I refactor quickly and easily, without side-effects or broken connections be
     <span class="o">}</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="n">Builder</span> <span class="nf">builder</span><span class="o">()</span> <span class="o">{</span>
-<span class="o">(</span><span class="mi">1</span><span class="o">)</span>    <span class="k">return</span> <span class="k">new</span> <span class="n">Builder</span><span class="o">();</span>
+<span class="o">(</span><span class="mi">1</span><span class="o">)</span>    <span class="k">return</span> <span class="k">new</span> <span class="n">Builder</span><span class="o">();</span> <span class="c1">// Builder instantiation</span>
     <span class="o">}</span>
 
     <span class="kd">private</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">()</span> <span class="o">{</span>
@@ -277,7 +277,7 @@ Now I refactor quickly and easily, without side-effects or broken connections be
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Builder</span> <span class="o">{</span>
         <span class="kd">public</span> <span class="n">AppComponent</span> <span class="nf">build</span><span class="o">()</span> <span class="o">{</span>
-<span class="o">(</span><span class="mi">2</span><span class="o">)</span>        <span class="k">return</span> <span class="k">new</span> <span class="n">Dagger_AppComponent</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+<span class="o">(</span><span class="mi">2</span><span class="o">)</span>        <span class="k">return</span> <span class="k">new</span> <span class="n">Dagger_AppComponent</span><span class="o">(</span><span class="k">this</span><span class="o">);</span> <span class="c1">// Dagger_AppComponent instantiation</span>
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
@@ -351,17 +351,22 @@ I'll just put here some referenced code that can confuse by its absence.</p>
 
 <p>What is going on here?</p>
 <ul>
-<li><code>Builder</code> creates <code>Dagger_AppComponent</code>;</li>
-<li><code>Dagger_AppComponent</code> creates <code>MainActivity$$MembersInjector</code>;</li>
+<li>A statical <code>Dagger_AppComponent.builder()</code> call creates a <code>Builder</code> instance;</li>
+<li><code>Builder</code> creates an <code>Dagger_AppComponent</code> instance;</li>
+<li><code>Dagger_AppComponent</code> creates a <code>MainActivity$$MembersInjector</code> instance;</li>
 <li><code>MainActivity$$MembersInjector</code> uses <code>PreferencesLogger$$Factory</code> to instantiate <code>PreferencesLogger</code> and injects it into <code>MainActivity</code>.</li>
 </ul>
 <p>OK, at this point you should understand the basics of how Dagger 2 works, it is time to drink some tea. Take a break and continue 15 minutes later. :D</p>
 <h1>Injection of third-party classes</h1>
 <hr />
-<h2>Module definition</h2>
+<h2>A <em>Module</em> definition</h2>
+<p>A <strong>module</strong> is a part of your application that <em>provides</em> some functionality,
+while a <strong>component</strong> is a part of your application that <em>consumes</em> some functionality.
+You can have any number of modules, for example you can create <code>DatabaseModule</code>, <code>NetworkModule</code>, <code>MainActivityModule</code>, etc.
+The same can be said for components.</p>
 <p>Let's create our next example around sharing a <code>SharedPreferences</code> object.
 At first, we need to somehow say to Dagger how we want to instantiate <code>SharedPreferences</code>.
-We obviously can not mark it's constructor with <code>@Inject</code>, so we do this by creation <strong>Module</strong> object like this:</p>
+We obviously can not mark it's constructor with <code>@Inject</code>, so we do this by creation a <strong>Module</strong> class like this:</p>
 <div class="highlight"><pre><span class="nd">@Module</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">PREFERENCES_FILE_NAME</span> <span class="o">=</span> <span class="s">&quot;preferences&quot;</span><span class="o">;</span>
@@ -382,9 +387,6 @@ We obviously can not mark it's constructor with <code>@Inject</code>, so we do t
 
 
 <p><code>@Module</code> says to Dagger that this object will be used for objects instantiation.</p>
-<p>You can have any number of modules, for example you can create <code>DatabaseModule</code>, <code>NetworkModule</code>, <code>MainActivityModule</code>, etc.
-I would recommend to think of module as a part of your application that <em>provides</em> some functionality,
- while <code>Component</code> is a part of your application that <em>consumes</em> some functionality.</p>
 <p><code>@Provides</code> means that this method should be called to instantiate an object.</p>
 <p><code>@Singleton</code> means that the object should be reused for injection into other objects.</p>
 <p>Here is a little diagram of how <strong>Module</strong> is being used by Dagger 2:</p>
@@ -411,6 +413,25 @@ constructor with <code>SharedPreferences</code> instance.</p>
 </pre></div>
 
 
+<p>We can go both ways - constructor argument or injectable field. Constructor arguments are usually more handy.
+Keep injectable fields for cases when you can't access constructor or if you have too many objects to pass in.</p>
+<p>In this example you can use <code>SharedPreferences</code> right inside the <code>PreferencesLogger</code>'s constructor if you wish.</p>
+<p>If you have <code>@Inject haredPreferences pref;</code> field then Dagger will inject it as well, but only after
+constructor's end. This will look like this:</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PreferencesLogger</span> <span class="o">{</span>
+
+    <span class="nd">@Inject</span> <span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
+
+    <span class="nd">@Inject</span>
+    <span class="kd">public</span> <span class="nf">PreferencesLogger</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="o">...</span>
+</pre></div>
+
+
+<p>Both methods are doing the same thing. Notice that in the second case there is no <code>private</code> modifier -
+this is because Dagger will need to access this field to make injection.</p>
 <h2>New <code>AppComponent</code></h2>
 <div class="highlight"><pre><span class="nd">@Singleton</span>
 <span class="nd">@Component</span><span class="o">(</span><span class="n">modules</span> <span class="o">=</span> <span class="n">AppModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
@@ -420,9 +441,10 @@ constructor with <code>SharedPreferences</code> instance.</p>
 </pre></div>
 
 
-<p><code>@Singleton</code> says that this component will keep singleton instances.</p>
-<p><code>(modules = AppModule.class)</code> means that AppModule will be used for injections by AppComponent. You can enumerate several modules here.</p>
-<h2>New <code>AppComponent</code> instantiation</h2>
+<p><code>@Singleton</code> says that this component will keep singletons instances inside.</p>
+<p><code>(modules = AppModule.class)</code> means that AppModule will be used for injections by AppComponent. You can enumerate several modules here, for example:
+<code>(modules = {AppModule.class, MainActivityModule.class})</code></p>
+<h2>A new <code>AppComponent</code> instantiation</h2>
 <div class="highlight"><pre>    <span class="n">component</span> <span class="o">=</span> <span class="n">Dagger_AppComponent</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">appModule</span><span class="o">(</span><span class="k">new</span> <span class="n">AppModule</span><span class="o">(</span><span class="k">this</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 
@@ -438,10 +460,25 @@ so this issue should be somehow avoided.</p>
 <a href="a href=&quot;https://github.com/square/mortar/blob/master/dagger2support/src/main/java/mortar/dagger2support/Dagger2.java">Dagger2.java</a></p>
 <p>I would recommend this method. It uses reflection, but it does not create any noticeable performance impact.
 On a slowest device that I could get it takes just about 10 ms during application startup time.</p>
+<p>Here is how it looks like:</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">AppComponent</span> <span class="n">component</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+        <span class="c1">// component = Dagger_AppComponent.builder().appModule(new AppModule(this)).build();</span>
+        <span class="n">component</span> <span class="o">=</span> <span class="n">Dagger2Helper</span><span class="o">.</span><span class="na">buildComponent</span><span class="o">(</span><span class="n">AppComponent</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">new</span> <span class="n">AppModule</span><span class="o">(</span><span class="k">this</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="o">...</span>
+</pre></div>
+
+
 <h2>Easier injection + inheritance</h2>
 <p>One option of how to make injection easier is to change a little bit our injection method.
 Instead of writing <code>MyApplication.inject(...)</code> we could write <code>MyApplication.getComponent().inject(...)</code>
-so we do not need to bloat <code>MyApplication</code>.</p>
+so we do not need to bloat <code>MyApplication</code>. You can also extract injector and call <code>MainInjector.getComponent().inject(...)</code>.</p>
 <p>Another option relies on reflection, so I will describe it more verbosely.</p>
 <p>During good old times of Dagger 1 we had only one <code>void inject(Object object)</code> method.
 While it was not so blazing fast it was quite handy. In example, we could write <code>inject(this)</code> in a base class
@@ -493,18 +530,12 @@ Real injection pref: null
 
 <p>As you can see, subclass dependency <code>SharedPreferences</code> has not been satisfied because the classical
 Dagger 2 usage pattern implies that you should call <code>inject(...)</code> on a <code>RealTarget</code>.
-If you're like to create things like <code>BaseActivity</code>, <code>BaseCustomView</code>, <code>BaseAdapter</code>, etc, this can not be satisfying.</p>
+If you like to create things like <code>BaseActivity</code>, <code>BaseCustomView</code>, <code>BaseAdapter</code>, etc, this can not be satisfying.</p>
 <p>Now I will use that reflection code I'm talking about
 <a href="https://github.com/konmik/Dagger2Example/blob/master/app/src/main/java/info/android15/dagger2example/Dagger2Helper.java">Dagger2Helper</a>:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="kd">static</span> <span class="n">AppComponent</span> <span class="n">component</span><span class="o">;</span>
 
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
-        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
-        <span class="c1">// component = Dagger_AppComponent.builder().appModule(new AppModule(this)).build();</span>
-        <span class="n">component</span> <span class="o">=</span> <span class="n">Dagger2Helper</span><span class="o">.</span><span class="na">buildComponent</span><span class="o">(</span><span class="n">AppComponent</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">new</span> <span class="n">AppModule</span><span class="o">(</span><span class="k">this</span><span class="o">));</span>
-    <span class="o">}</span>
+    <span class="o">...</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">Dagger2Helper</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="n">AppComponent</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">component</span><span class="o">,</span> <span class="n">target</span><span class="o">);</span>
