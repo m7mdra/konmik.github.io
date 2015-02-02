@@ -62,15 +62,16 @@ storage and passing them around, Dagger provides an elegant solution.</p>
 <p>On Android one of the typical tasks is to create a single <code>SharedPreferences</code> object and share it through all the application.
 It is required in an activity, in a fragment, in a custom view. Typical solution is to keep that <code>SharedPreference</code> inside of <code>Application</code> object
 and create a getter for it. Then, your code will look like this:</p>
-<div class="highlight"><pre><span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
-<span class="n">Gson</span> <span class="n">gson</span><span class="o">;</span>
-<span class="n">ServerAPI</span> <span class="n">api</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+    <span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
+    <span class="n">Gson</span> <span class="n">gson</span><span class="o">;</span>
+    <span class="n">ServerAPI</span> <span class="n">api</span><span class="o">;</span>
 
-<span class="n">onCreate</span><span class="o">(...)</span> <span class="o">{</span>
-    <span class="n">MyApp</span> <span class="n">app</span> <span class="o">=</span> <span class="o">(</span><span class="n">MyApp</span><span class="o">)</span><span class="n">getContext</span><span class="o">().</span><span class="na">getApplicationContext</span><span class="o">();</span>
-    <span class="n">pref</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">();</span>
-    <span class="n">gson</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getGson</span><span class="o">();</span>
-    <span class="n">api</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getApi</span><span class="o">();</span>
+    <span class="n">onCreate</span><span class="o">(...)</span> <span class="o">{</span>
+        <span class="n">MyApp</span> <span class="n">app</span> <span class="o">=</span> <span class="o">(</span><span class="n">MyApp</span><span class="o">)</span><span class="n">getContext</span><span class="o">().</span><span class="na">getApplicationContext</span><span class="o">();</span>
+        <span class="n">pref</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">();</span>
+        <span class="n">gson</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getGson</span><span class="o">();</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="na">getApi</span><span class="o">();</span>
 </pre></div>
 
 
@@ -78,12 +79,13 @@ and create a getter for it. Then, your code will look like this:</p>
 Singleton pattern everywhere. Now, think about refactoring. You've decided to move <code>Gson</code> away from <code>MyApp</code> into <code>MyNetwork</code>.
 How many lines of code you will need to change?</p>
 <p>Dagger way:</p>
-<div class="highlight"><pre><span class="nd">@Inject</span> <span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
-<span class="nd">@Inject</span> <span class="n">Gson</span> <span class="n">gson</span><span class="o">;</span>
-<span class="nd">@Inject</span> <span class="n">ServerAPI</span> <span class="n">api</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+    <span class="nd">@Inject</span> <span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
+    <span class="nd">@Inject</span> <span class="n">Gson</span> <span class="n">gson</span><span class="o">;</span>
+    <span class="nd">@Inject</span> <span class="n">ServerAPI</span> <span class="n">api</span><span class="o">;</span>
 
-<span class="n">onCreate</span><span class="o">(...)</span> <span class="o">{</span>
-    <span class="n">MainInjector</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="n">onCreate</span><span class="o">(...)</span> <span class="o">{</span>
+        <span class="n">MainInjector</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 </pre></div>
 
 
@@ -147,10 +149,10 @@ or where to get it then if something changes you should trace all objects that a
 <code>SharedPreferences</code> and change their behavior. With Dagger the code that initializes <code>SharedPreferences</code>
 lives in a different place of where <code>SharedPreferences</code> are used. So there are less connections between
 objects and refactoring can be made easy.</p>
-<h3>A declarative programming style</h3>
+<h3>Declarative programming style</h3>
 <p><em>Declarative programming</em> means that when you're writing a program you're declaring what is going on,
 rather than how this code is connected with other parts of your program and what is going next. Amount of bugs that can
-be avoided with declarative programming style is tremendous. On Android it is not easy to understand how
+be avoided with the declarative programming style is tremendous. On Android it is not easy to understand how
 this could be done because we have so many callbacks and lifecycles that needs to be taken into account,
 but Dagger helps at least with the objects instantiation.</p>
 <h1>Installation</h1>
@@ -413,10 +415,9 @@ constructor with <code>SharedPreferences</code> instance.</p>
 </pre></div>
 
 
-<p>We can go both ways - constructor argument or injectable field. Constructor arguments are usually more handy.
-Keep injectable fields for cases when you can't access constructor or if you have too many objects to pass in.</p>
-<p>In this example you can use <code>SharedPreferences</code> right inside the <code>PreferencesLogger</code>'s constructor if you wish.</p>
-<p>If you have <code>@Inject haredPreferences pref;</code> field then Dagger will inject it as well, but only after
+<p>We can go both ways - constructor argument or injectable field. Constructor arguments are usually more handy -
+if you inject an object through constructor you can use it right inside that constructor if you wish.</p>
+<p>If you have <code>@Inject haredPreferences pref</code> field then Dagger will inject it as well, but only after
 constructor's end. This will look like this:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PreferencesLogger</span> <span class="o">{</span>
 
@@ -622,7 +623,7 @@ Typically we do not inject during scrolling - this is something we do during loa
 
       <footer>
 		<p role="contentinfo">
-		  © 2013 Konstantin Mikheev - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
+		  © 2015 Konstantin Mikheev - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-simplegrey">pelican-simplegrey</a>.
     	</p>
 
 	  </footer>	
