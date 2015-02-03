@@ -438,6 +438,7 @@ this is because Dagger will need to access this field to make injection.</p>
 <span class="nd">@Component</span><span class="o">(</span><span class="n">modules</span> <span class="o">=</span> <span class="n">AppModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AppComponent</span> <span class="o">{</span>
     <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainActivity</span> <span class="n">activity</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">PreferencesLogger</span> <span class="n">logger</span><span class="o">);</span>
 <span class="o">}</span>
 </pre></div>
 
@@ -458,7 +459,7 @@ this is because Dagger will need to access this field to make injection.</p>
 with red color while the project still compiles without errors. Everything should look nice and clean,
 so this issue should be somehow avoided.</p>
 <p>While surfing GitHub I've found an interesting solution for this problem. Here is the link:
-<a href="a href=&quot;https://github.com/square/mortar/blob/master/dagger2support/src/main/java/mortar/dagger2support/Dagger2.java">Dagger2.java</a></p>
+<a href="https://github.com/square/mortar/blob/master/dagger2support/src/main/java/mortar/dagger2support/Dagger2.java">Dagger2.java</a></p>
 <p>I would recommend this method. It uses reflection, but it does not create any noticeable performance impact.
 On a slowest device that I could get it takes just about 10 ms during application startup time.</p>
 <p>Here is how it looks like:</p>
@@ -567,9 +568,10 @@ Real injection pref: android.app.SharedPreferencesImpl@419630d8
 <p>Hurray! Easy injections through a base class! Yeh, but what is their price?
 I said "reflection" so I need to prove that it will not degrade the performance.</p>
 <h2>Performance</h2>
-<p>For performance benchmarks I've used Galaxy S - an android device of year 2010. I've also created 50-method Component class to make reflection run slower.</p>
-<p>A direct injection on a subclass takes 0.0013 ms,
-a reflected injection on a superclass takes 0.014 ms.
+<p>For performance benchmarks I've used Galaxy S - an android device of year 2010. I've also created 50-method Component class to make reflection run slower.
+While this benchmark can not be exact because or processor cache hits and JIT, the difference should not be large.</p>
+<p>A direct injection on a subclass takes about 0.0013 ms,
+a reflected injection on a superclass takes about 0.014 ms.
 Both prices are negligible.</p>
 <p>For a comparison, one frame of 60 FPS animation takes 16 ms. You can make 100 reflected injections or 1000 direct injections
 EVERY frame during the scroll time and the user will never see the difference even on a slowest device.
