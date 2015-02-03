@@ -569,7 +569,7 @@ Real injection pref: android.app.SharedPreferencesImpl@419630d8
 I said "reflection" so I need to prove that it will not degrade the performance.</p>
 <h2>Performance</h2>
 <p>For performance benchmarks I've used Galaxy S - an android device of year 2010. I've also created 50-method Component class to make reflection run slower.
-While this benchmark can not be exact because or processor cache hits and JIT, the difference should not be large.</p>
+While this benchmark can not be exact because of processor cache hits and JIT, the difference should not be large.</p>
 <p>A direct injection on a subclass takes about 0.0013 ms,
 a reflected injection on a superclass takes about 0.014 ms.
 Both prices are negligible.</p>
