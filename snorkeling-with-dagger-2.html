@@ -438,7 +438,6 @@ this is because Dagger will need to access this field to make injection.</p>
 <span class="nd">@Component</span><span class="o">(</span><span class="n">modules</span> <span class="o">=</span> <span class="n">AppModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AppComponent</span> <span class="o">{</span>
     <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainActivity</span> <span class="n">activity</span><span class="o">);</span>
-    <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">PreferencesLogger</span> <span class="n">logger</span><span class="o">);</span>
 <span class="o">}</span>
 </pre></div>
 
@@ -446,6 +445,17 @@ this is because Dagger will need to access this field to make injection.</p>
 <p><code>@Singleton</code> says that this component will keep singletons instances inside.</p>
 <p><code>(modules = AppModule.class)</code> means that AppModule will be used for injections by AppComponent. You can enumerate several modules here, for example:
 <code>(modules = {AppModule.class, MainActivityModule.class})</code></p>
+<p>If you want to inject into more than one object with this component you can write something like this:</p>
+<div class="highlight"><pre><span class="nd">@Singleton</span>
+<span class="nd">@Component</span><span class="o">(</span><span class="n">modules</span> <span class="o">=</span> <span class="n">AppModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AppComponent</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainActivity</span> <span class="n">activity</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainFragment</span> <span class="n">fragment</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">inject</span><span class="o">(</span><span class="n">MainToolbarView</span> <span class="n">view</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+
+
 <h2>A new <code>AppComponent</code> instantiation</h2>
 <div class="highlight"><pre>    <span class="n">component</span> <span class="o">=</span> <span class="n">Dagger_AppComponent</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">appModule</span><span class="o">(</span><span class="k">new</span> <span class="n">AppModule</span><span class="o">(</span><span class="k">this</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
