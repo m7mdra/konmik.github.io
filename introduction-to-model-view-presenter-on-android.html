@@ -323,7 +323,7 @@ how to make this look much better. :)</p>
 so there is no memory leak on a screen flip, and there is no need to unsubscribe the request.</p>
 </li>
 </ul>
-<h1>Nucleus</h1>
+<h1><a href="https://github.com/konmik/nucleus">Nucleus</a></h1>
 <p>Nucleus is a library I created while was inspired by <a href="https://github.com/square/mortar">Mortar</a> library
 and <a href="https://people.apache.org/~fhanik/kiss.html">Keep It Stupid Simple</a> article.</p>
 <p>Here is a list of features:</p>
@@ -427,27 +427,42 @@ takes less that 0.3 ms. This happens only during instantiation of a view, so the
 <ul>
 <li>
 <p><code>deliver()</code> will just delay all onNext, onError and onComplete emissions until a View becomes available.
- Use it for cases when you're doing a one-time request, like logging in to a web service.</p>
+ Use it for cases when you're doing a one-time request, like logging in to a web service. <a href="http://konmik.github.io/nucleus/nucleus/presenter/RxPresenter.html#deliver()">Javadoc</a></p>
 </li>
 <li>
 <p><code>deliverLatest()</code> will drop the older onNext value if a new onNext value is available. If you have an updatable source
- of data this will allow you to not accumulate data that is not necessary.</p>
+ of data this will allow you to not accumulate data that is not necessary. <a href="http://konmik.github.io/nucleus/nucleus/presenter/RxPresenter.html#deliverLatest()">Javadoc</a></p>
 </li>
 <li>
 <p><code>deliverLatestCache()</code> is the same as <code>deliverLatest()</code> but in addition it will keep the latest result in memory
  and will re-deliver it when another instance of a view becomes available (i.e. on configuration change). If you don't want to
  organize save/restore of a request result in your view (in case if a result is big or it can not be easily saved into Bundle) this
- method will allow you to make user experience better.</p>
+ method will allow you to make user experience better. <a href="http://konmik.github.io/nucleus/nucleus/presenter/RxPresenter.html#deliverLatestCache()">Javadoc</a></p>
 </li>
 </ul>
 <h2>Presenter's lifecycle</h2>
 <p>Presenter's lifecycle is significantly shorter that a lifecycle of other Android components.</p>
 <ul>
-<li><code>void onCreate(Bundle savedState)</code> - is called on every presenter's creation.</li>
-<li><code>void onDestroy()</code> - is called when user leaves a View.</li>
-<li><code>void onSave(Bundle state)</code> - is called during View's <code>onSaveInstanceState</code> to persist Presenter's state as well.</li>
-<li><code>void onTakeView(ViewType view)</code> - is called during Activity's or Fragment's <code>onResume()</code>, or during <code>android.view.View#onAttachedToWindow()</code>.</li>
-<li><code>void onDropView()</code> - is called during Activity's or Fragment's <code>onPause()</code>, or during <code>android.view.View#onDetachedFromWindow()</code>.</li>
+<li>
+<p><code>void onCreate(Bundle savedState)</code> - is called on every presenter's creation.
+ <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onCreate(android.os.Bundle)">Javadoc</a></p>
+</li>
+<li>
+<p><code>void onDestroy()</code> - is called when user leaves a View.
+ <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onDestroy()">Javadoc</a></p>
+</li>
+<li>
+<p><code>void onSave(Bundle state)</code> - is called during View's <code>onSaveInstanceState</code> to persist Presenter's state as well.
+ <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onSave(android.os.Bundle)">Javadoc</a></p>
+</li>
+<li>
+<p><code>void onTakeView(ViewType view)</code> - is called during Activity's or Fragment's <code>onResume()</code>, or during <code>android.view.View#onAttachedToWindow()</code>.
+ <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onTakeView(ViewType)">Javadoc</a></p>
+</li>
+<li>
+<p><code>void onDropView()</code> - is called during Activity's or Fragment's <code>onPause()</code>, or during <code>android.view.View#onDetachedFromWindow()</code>.
+ <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onDropView()">Javadoc</a></p>
+</li>
 </ul>
 <h1>Best practices</h1>
 <h2>Save your request arguments inside Presenter</h2>
@@ -497,7 +512,7 @@ a good partner for <a href="http://jakewharton.github.io/butterknife">ButterKnif
 <p>If you have more than a couple of request arguments this library naturally saves life. You can create <code>BasePresenter</code> and put <em>Icepick</em>
 into that class once and all subclasses will automatically get the ability to save their fields that are annotated
 with <code>@Icicle</code> and you will never need to implement <code>onSave</code> again. This also works for saving Activity's, Fragment's or View's state.</p>
-<h2>Execute instant queries on the main thread in <code>onTakeView</code></h2>
+<h2>Execute instant queries on the main thread in <code>onTakeView</code> <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onTakeView(ViewType)">Javadoc</a></h2>
 <p>Sometimes you have a short data query, such as reading a small amount of data from a database. While you can easily
 create a restartable request with Nucleus, you don't have to use this powerful tool everywhere. If you're
 initiating a background request during a fragment's creation, a user will see a blank screen for a moment, even if the query will take just
@@ -560,7 +575,7 @@ They are also thread-safe.</p>
 	            <h2>Links</h2>
 	            <ul>
 	                <li><a href="https://github.com/konmik">GitHub</a></li>
-	                <li><a href="http://konmik.github.io/nucleus">Nucleus</a></li>
+	                <li><a href="https://github.com/konmik/nucleus">Nucleus</a></li>
 	                <li><a href="https://github.com/konmik/StackLayout">StackLayout</a></li>
 	            </ul>
 	          </aside>
