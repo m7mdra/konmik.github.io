@@ -549,7 +549,7 @@ Real injection pref: null
 <p>As you can see, subclass dependency <code>SharedPreferences</code> has not been satisfied because the classical
 Dagger 2 usage pattern implies that you should call <code>inject(...)</code> on a <code>RealTarget</code>.
 If you like to create things like <code>BaseActivity</code>, <code>BaseCustomView</code>, <code>BaseAdapter</code>, etc, this can not be satisfying.</p>
-<p>Now I will use <code>inject</code> function that has been made to reproduce Dagger1 easy injections through superclass:
+<p>Now I will use <code>inject</code> function that has been made to reproduce Dagger1 easy injections through a superclass:
 <a href="https://github.com/konmik/Dagger2Example/blob/master/app/src/main/java/info/android15/dagger2example/Dagger2Helper.java">Dagger2Helper</a>:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
 
