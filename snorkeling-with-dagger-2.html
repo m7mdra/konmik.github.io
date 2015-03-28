@@ -249,7 +249,8 @@ to Dagger 2 into which objects we want to inject.</p>
 </pre></div>
 
 
-<p><code>Dagger_AppComponent</code> is a generated class of type <code>AppComponent</code> that we need to access the generated code.</p>
+<p><code>Dagger_AppComponent</code> is a generated class of type <code>AppComponent</code> that we need to access the generated code.
+The IDE can not see this generated class and marks it as red, but later I will show how to deal with this problem.</p>
 <p>Now we have a complete workable example! :)</p>
 <p>Yes, Dagger requires a little bit of work to do at the beginning. But think about advantages it can give!
 On my average project I have about 50 objects that need to be shared across an application.
@@ -467,13 +468,16 @@ this is because Dagger will need to access this field to make injection.</p>
 <h1>Magic</h1>
 <hr />
 <h2>Easier instantiation of Component</h2>
-<p>If you've tried to use Dagger 2, then you've noticed that IDE can not find <code>Dagger_AppComponent</code> and marks it as error
+<p>If you tried to use Dagger 2, then you noticed that IDE can not find <code>Dagger_AppComponent</code> and marks it as error
 with red color while the project still compiles without errors. Everything should look nice and clean,
 so this issue should be somehow avoided.</p>
-<p>While surfing GitHub I've found an interesting solution for this problem. Here is the link:
-<a href="https://github.com/square/mortar/blob/master/dagger2support/src/main/java/mortar/dagger2support/Dagger2.java">Dagger2.java</a></p>
-<p>I would recommend this method. It uses reflection, but it does not create any noticeable performance impact.
-On a slowest device that I could get it takes just about 10 ms during application startup time.</p>
+<p>One possible solution - is to use <a href="https://bitbucket.org/hvisser/android-apt">android-apt</a> plugin.</p>
+<p>While surfing GitHub I've found another interesting solution for this problem
+in <a href="https://github.com/square/mortar">Mortar</a> project (I can't give a direct reference to the file - it moves sometimes).
+I took <code>buildComponent</code> function that instantiates component
+and copied it into my example. <a href="https://github.com/konmik/Dagger2Example/blob/master/app/src/main/java/info/android15/dagger2example/Dagger2Helper.java">Dagger2Helper</a>:</p>
+<p>The second solution uses reflection, but it does not create any noticeable performance impact.
+On a slowest device that I could get it takes just about 15 ms during application startup time.</p>
 <p>Here is how it looks like:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kd">static</span> <span class="n">AppComponent</span> <span class="n">component</span><span class="o">;</span>
@@ -490,9 +494,9 @@ On a slowest device that I could get it takes just about 10 ms during applicatio
 
 
 <h2>Easier injection + inheritance</h2>
-<p>One option of how to make injection easier is to change a little bit our injection method.
+<p>One tip of how to make injection easier is to change a little bit our injection method.
 Instead of writing <code>MyApplication.inject(...)</code> we could write <code>MyApplication.getComponent().inject(...)</code>
-so we do not need to bloat <code>MyApplication</code>. You can also extract injector and call <code>MainInjector.getComponent().inject(...)</code>.</p>
+so we do not have to bloat <code>MyApplication</code>. You can also extract injector and call <code>MainInjector.getComponent().inject(...)</code>.</p>
 <p>Another option relies on reflection, so I will describe it more verbosely.</p>
 <p>During good old times of Dagger 1 we had only one <code>void inject(Object object)</code> method.
 While it was not so blazing fast it was quite handy. In example, we could write <code>inject(this)</code> in a base class
@@ -545,7 +549,7 @@ Real injection pref: null
 <p>As you can see, subclass dependency <code>SharedPreferences</code> has not been satisfied because the classical
 Dagger 2 usage pattern implies that you should call <code>inject(...)</code> on a <code>RealTarget</code>.
 If you like to create things like <code>BaseActivity</code>, <code>BaseCustomView</code>, <code>BaseAdapter</code>, etc, this can not be satisfying.</p>
-<p>Now I will use that reflection code I'm talking about
+<p>Now I will use <code>inject</code> function that has been made to reproduce Dagger1 easy injections through superclass:
 <a href="https://github.com/konmik/Dagger2Example/blob/master/app/src/main/java/info/android15/dagger2example/Dagger2Helper.java">Dagger2Helper</a>:</p>
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
 
