@@ -420,8 +420,8 @@ bind a presenter is to write <code>@RequiresPresenter(MainPresenter.class)</code
 will not degrade performance. The benchmark I've made on <em>Galaxy S</em> (year 2010 device) says that processing this annotation
 takes less that 0.3 ms. This happens only during instantiation of a view, so the annotation is considered to be free.</p>
 <h2>More examples</h2>
-<p>An extended example with request arguments persistence is here: <a href="https://github.com/konmik/nucleus/tree/master/nucleusexample">Nucleus Example</a>.</p>
-<p>An example with unit tests: <a href="https://github.com/konmik/nucleus/tree/master/nucleusexample_withtests">Nucleus Example With Tests</a></p>
+<p>An extended example with request arguments persistence is here: <a href="https://github.com/konmik/nucleus/tree/master/nucleus-example">Nucleus Example</a>.</p>
+<p>An example with unit tests: <a href="https://github.com/konmik/nucleus/tree/master/nucleus-example-with-tests">Nucleus Example With Tests</a></p>
 <h2><code>deliverLatestCache()</code> method</h2>
 <p>This RxPresenter helping method has three variants:</p>
 <ul>
@@ -528,7 +528,7 @@ But when control goes like this: <strong>user -&gt; view -&gt; presenter -&gt; v
 just violates KISS principle.</p>
 <p>Fragments? Yes, they are something that violates this natural flow of control. They are too complex.
 Here is a very good article considering fragments: <a href="http://corner.squareup.com/2014/10/advocating-against-android-fragments.html">Advocating Against Android Fragments</a>.
-But I would not try to create a "better view controller" what <a href="https://github.com/square/flow">Flow</a> library does.</p>
+But the alternative <a href="https://github.com/square/flow">Flow</a> does not simplify things much.</p>
 <h2>Use immutable data structures for complex database-related projects</h2>
 <p><a href="https://github.com/google/auto/tree/master/value">AutoValue</a> is a good library for doing this, it has a good list
 of benefits in it's description, I recommend reading it.
