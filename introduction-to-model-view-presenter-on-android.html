@@ -80,6 +80,8 @@ Attach a couple of background tasks to that temporary Views, and the cake is rea
 <li>Smaller objects, less bugs, easier to debug.</li>
 <li>Testable.</li>
 </ul>
+<p>View layer with MVP becomes so simple, so it does not even need to have callbacks
+when requesting for data. View logic becomes very linear.</p>
 <h3>Reason 2: Background tasks</h3>
 <p>Whenever you write an Activity, a Fragment or a custom View, you can put all
 methods that are connected with
@@ -464,6 +466,31 @@ takes less that 0.3 ms. This happens only during instantiation of a view, so the
  <a href="http://konmik.github.io/nucleus/nucleus/presenter/Presenter.html#onDropView()">Javadoc</a></p>
 </li>
 </ul>
+<h2>View recycling and view stack</h2>
+<p>Normally your views (i.e. fragments and custom views) are attached and detached randomly during user interactions.
+This could be a good idea to not destroy a presenter every time a view is detached. You can detach and attach
+views any time and presenters will outlive all this actions, continuing background work.</p>
+<p>A fragment can not know if it is detached because of configuration change or
+because it is being popped off the stack.</p>
+<p>The default behavior of Nucleus views is: destroy a presenter during <code>onDestroy()</code> only if activity is finishing.</p>
+<p>So, if you're attaching/detaching a view during normal Activity life, you need to signal to View
+that it's presenter should be destroyed. There are public <code>NucleusLayout.destroyPresenter()</code> and
+<code>NucleusFragment.destroyPresenter()</code> methods that can be used here.</p>
+<p>For example, here is how a FragmentManager <code>pop()</code> operation works in one of my projects:</p>
+<div class="highlight"><pre>    <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragmentManager</span><span class="o">.</span><span class="na">findFragmentById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">fragmentStackContainer</span><span class="o">);</span>
+    <span class="n">fragmentManager</span><span class="o">.</span><span class="na">popBackStackImmediate</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">fragment</span> <span class="k">instanceof</span> <span class="n">NucleusFragment</span><span class="o">)</span>
+        <span class="o">((</span><span class="n">NucleusFragment</span><span class="o">)</span><span class="n">fragment</span><span class="o">).</span><span class="na">destroyPresenter</span><span class="o">();</span>
+</pre></div>
+
+
+<p>You will need to do the same for <em>replace</em> fragment stack operation, and probably for
+<em>push</em> operation when your bottom fragment gets destroyed.</p>
+<p>You may decide to destroy presenters every time views get detached from Activity and avoid such problems,
+but you will lose an ability to continue background tasks while views are detached.</p>
+<p>So, this  "view recycling" section is left entirely up to you.
+Probably, I will find an elegant solution for this problem,
+but if you know one, please let me know.</p>
 <h1>Best practices</h1>
 <h2>Save your request arguments inside Presenter</h2>
 <p>The rule is simple: the presenter's main purpose is to manage requests. So View should not handle or restart requests itself.
@@ -529,6 +556,20 @@ just violates KISS principle.</p>
 <p>Fragments? Yes, they are something that violates this natural flow of control. They are too complex.
 Here is a very good article considering fragments: <a href="http://corner.squareup.com/2014/10/advocating-against-android-fragments.html">Advocating Against Android Fragments</a>.
 But the alternative <a href="https://github.com/square/flow">Flow</a> does not simplify things much.</p>
+<p>If you're familiar with MVC (Model-View-Controller) - don't do that. Model-View-Controller is absolutely different
+from MVP and does not solve any problems which interface developers are facing.</p>
+<p>What is MVC?
+<em> </em>Model<em> stands here for internal application state. It can or can not be connected with storage.
+</em> <em>View</em> is only one thing that is common with MVP - it is a part of your application that renders
+  <em>Model</em> to the screen.
+<em> </em>Controller* represents an input device, such as keyboard, mouse or joystick.</p>
+<p>MVC comes from good (probably) and old days when you had a PC, a simple keyboard-driven application such as
+a game engine. No windows, no graphical interface - the application was something that receives input (Controller),
+maintains some state and produces output (View). This pattern is absolutely useless on Android.</p>
+<p>There is a lot of confusion with MVC. People believe that they use MVC, while in fact they use MVP (web developers).
+Many Android developers think that Controller is something that is controlling View, so they are trying to
+extract View logic out of View to create a thin View that is controlled by a dedicated Controller.
+I personally do not see any benefits in such application structure.</p>
 <h2>Use immutable data structures for complex database-related projects</h2>
 <p><a href="https://github.com/google/auto/tree/master/value">AutoValue</a> is a good library for doing this, it has a good list
 of benefits in it's description, I recommend reading it.
