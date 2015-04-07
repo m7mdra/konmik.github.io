@@ -558,14 +558,16 @@ Here is a very good article considering fragments: <a href="http://corner.square
 But the alternative <a href="https://github.com/square/flow">Flow</a> does not simplify things much.</p>
 <p>If you're familiar with MVC (Model-View-Controller) - don't do that. Model-View-Controller is absolutely different
 from MVP and does not solve any problems which interface developers are facing.</p>
-<p>What is MVC?
-<em> </em>Model<em> stands here for internal application state. It can or can not be connected with storage.
-</em> <em>View</em> is only one thing that is common with MVP - it is a part of your application that renders
-  <em>Model</em> to the screen.
-<em> </em>Controller* represents an input device, such as keyboard, mouse or joystick.</p>
+<p>What is MVC?</p>
+<ul>
+<li><strong>Model</strong> stands here for internal application state. It can or can not be connected with storage.</li>
+<li><strong>View</strong> is only one thing that is common with MVP - it is a part of your application that renders
+  <strong>Model</strong> to the screen.</li>
+<li><strong>Controller</strong> represents an input device, such as keyboard, mouse or joystick.</li>
+</ul>
 <p>MVC comes from good (probably) and old days when you had a PC, a simple keyboard-driven application such as
 a game engine. No windows, no graphical interface - the application was something that receives input (Controller),
-maintains some state and produces output (View). This pattern is absolutely useless on Android.</p>
+maintains some state (Model) and produces output (View). This pattern is absolutely useless on Android.</p>
 <p>There is a lot of confusion with MVC. People believe that they use MVC, while in fact they use MVP (web developers).
 Many Android developers think that Controller is something that is controlling View, so they are trying to
 extract View logic out of View to create a thin View that is controlled by a dedicated Controller.
