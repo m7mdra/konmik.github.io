@@ -6,7 +6,7 @@
 	<meta name="author" content="Konstantin Mikheev">
 	
 
-	<meta name="description" content="This article is a step-by-step introduction to MVP on Android, from a simplest possible example to best practices.">
+	<meta name="description" content="This article is a step-by-step introduction to MVP on Android, from a simplest possible example to best practices. The article also introduces a new library that makes MVP on Android extremely simple.">
 
 
 	<link rel="top" href="#" /><link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic|Source+Code+Pro' rel='stylesheet' type='text/css'></link>
@@ -40,7 +40,8 @@
   in <a href="./category/android.html">Android</a>
 </div>		
 		<p>This article is a step-by-step introduction to MVP on Android, from a simplest possible
-example to best practices.</p>
+example to best practices. The article also introduces a new library
+that makes MVP on Android extremely simple.</p>
 
 
 <h1>Is it simple? How can I benefit of using it?</h1>
@@ -470,13 +471,14 @@ takes less that 0.3 ms. This happens only during instantiation of a view, so the
 <p>Normally your views (i.e. fragments and custom views) are attached and detached randomly during user interactions.
 This could be a good idea to not destroy a presenter every time a view is detached. You can detach and attach
 views any time and presenters will outlive all this actions, continuing background work.</p>
-<p>A fragment can not know if it is detached because of configuration change or
+<p>There is a problem that is connected to view resycling: a fragment can not know if it is detached because of configuration change or
 because it is being popped off the stack.</p>
-<p>The default behavior of Nucleus views is: destroy a presenter during <code>onDestroy()</code> only if activity is finishing.</p>
-<p>So, if you're attaching/detaching a view during normal Activity life, you need to signal to View
-that it's presenter should be destroyed. There are public <code>NucleusLayout.destroyPresenter()</code> and
+<p>The default behavior of Nucleus views is: destroy a presenter during view's <code>onDetachedFromWindow()</code>/<code>onDestroy()</code> only
+if the activity is finishing.</p>
+<p>So, if you're destroying a view during normal Activity life, you need to signal to that view
+that it's presenter should also be destroyed. There are public <code>NucleusLayout.destroyPresenter()</code> and
 <code>NucleusFragment.destroyPresenter()</code> methods that can be used here.</p>
-<p>For example, here is how a FragmentManager <code>pop()</code> operation works in one of my projects:</p>
+<p>For example, here is how fragment manager's <code>pop()</code> operation works in one of my projects:</p>
 <div class="highlight"><pre>    <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragmentManager</span><span class="o">.</span><span class="na">findFragmentById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">fragmentStackContainer</span><span class="o">);</span>
     <span class="n">fragmentManager</span><span class="o">.</span><span class="na">popBackStackImmediate</span><span class="o">();</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">fragment</span> <span class="k">instanceof</span> <span class="n">NucleusFragment</span><span class="o">)</span>
@@ -486,7 +488,7 @@ that it's presenter should be destroyed. There are public <code>NucleusLayout.de
 
 <p>You will need to do the same for <em>replace</em> fragment stack operation, and probably for
 <em>push</em> operation when your bottom fragment gets destroyed.</p>
-<p>You may decide to destroy presenters every time views get detached from Activity and avoid such problems,
+<p>You may decide to destroy presenters every time views get detached from their Activity and avoid such problems,
 but you will lose an ability to continue background tasks while views are detached.</p>
 <p>So, this  "view recycling" section is left entirely up to you.
 Probably, I will find an elegant solution for this problem,
