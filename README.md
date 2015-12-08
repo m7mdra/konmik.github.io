@@ -8,7 +8,7 @@ The entire blog has been moved to [wiki](https://github.com/konmik/konmik.github
 
 *December 08, 2015*
 
-### [RxJava magic goes away](https://github.com/konmik/konmik.github.io/wiki/RxJava-magic-goes-away)
+### [RxJava magic (finally) goes away](https://github.com/konmik/konmik.github.io/wiki/RxJava-magic-goes-away)
 
 There is a too big amount of magic inside of RxJava.
 Docs and tutorials are either too shallow or too complicated.
