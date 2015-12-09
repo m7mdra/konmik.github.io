@@ -14,6 +14,8 @@ There is too much magic inside of RxJava.
 Docs and tutorials are either too shallow or too complicated.
 Here is the middle ground that is essential to know before playing with RxJava.
 
+-------
+
 *September 19, 2015*
 
 ### [How to have a 100% code coverage with tests and be sane](https://github.com/konmik/konmik.github.io/wiki/How-to-have-a-100%25-code-coverage-with-tests-and-be-sane)
