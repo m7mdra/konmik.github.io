@@ -6,6 +6,14 @@ The entire blog has been moved to [wiki](https://github.com/konmik/konmik.github
 
 # Articles
 
+*January 06, 2016*
+
+### [Why lambdas matter (even on Android)](https://github.com/konmik/konmik.github.io/wiki/Why-lambdas-matter-(even-on-Android))
+
+A little knowledge exchange from an active lambdas user.
+
+-------
+
 *December 08, 2015*
 
 ### [RxJava magic (finally) goes away](https://github.com/konmik/konmik.github.io/wiki/RxJava-magic-(finally)-goes-away)
